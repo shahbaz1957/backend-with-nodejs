@@ -5,10 +5,11 @@ import { User } from "../models/user.model.js";
 
 export const verifyJWT = asyncHandler(async (req, _, next) => {
     try {
-        // Extract token from cookies or Authorization header
-        let token = req.cookies?.accessToken || req.header("Authorization");
+        // Extract token from cookies or Authorization headertoken 
+        let token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer " ,"")
+        // let token = req.cookies?.accessToken || req.header("Authorization");
 
-        console.log("Raw Token:", token, "Type:", typeof token); // Debugging log
+        //console.log("Raw Token:", token, "Type:", typeof token); // Debugging log
 
         // Ensure token is a string before using startsWith()
         if (typeof token !== "string") {
@@ -16,16 +17,16 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
             throw new ApiError(401, "Invalid token format - Token must be a string");
         }
 
-        // If token is from Authorization header, remove "Bearer "
-        if (token.startsWith("Bearer ")) {
-            token = token.slice(7).trim(); // Remove "Bearer " (7 characters) and trim spaces
-        }
+        // // If token is from Authorization header, remove "Bearer "
+        // if (token.startsWith("Bearer ")) {
+        //     token = token.slice(7).trim(); // Remove "Bearer " (7 characters) and trim spaces
+        // }
 
-        console.log("Processed Token:", token); // Debugging log
+        //console.log("Processed Token:", token); // Debugging log
 
         // Verify JWT
         const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-        console.log("Decoded Token:", decodedToken); // Debugging log
+       // console.log("Decoded Token:", decodedToken); // Debugging log
 
         // Find user and exclude password & refreshToken
         const user = await User.findById(decodedToken?._id).select("-password -refreshToken");
