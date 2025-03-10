@@ -21,7 +21,6 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
         // if (token.startsWith("Bearer ")) {
         //     token = token.slice(7).trim(); // Remove "Bearer " (7 characters) and trim spaces
         // }
-
         //console.log("Processed Token:", token); // Debugging log
 
         // Verify JWT
@@ -43,3 +42,14 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
         throw new ApiError(401, error.message || "Invalid access token");
     }
 });
+
+
+
+
+
+ // If we are already login then we change password 
+// Attach user to request object at verifyJWT -> req.user = use
+
+
+
+
